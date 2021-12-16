@@ -1,0 +1,55 @@
+mysql> use employee
+Database changed
+mysql> select * from de[t;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '[t' at line 1
+mysql> select * from dept;
++--------+------------+----------+
+| deptno | dename     | location |
++--------+------------+----------+
+|     10 | accounting | new york | 
+|     20 | research   | dallas   | 
+|     30 | sales      | chicago  | 
+|     40 | operations | delhi    | 
++--------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> notee;
+mysql> /*Let me create a table dept_hod like it has two attributes, the dept no. as primary key and, hod...another table dept_student which has the deptnpo. as foreign key referencing  the deptno. in dept_hod which is a primary key*/
+mysql> create table dept_hod(deptno integer primary key,hod varchar(100));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> /*Note the dept_student also has student name as an other attribute*/
+mysql> create table dept_student(foreign key(deptno) references dept_hod(deptno),student_name varchar(90));
+ERROR 1072 (42000): Key column 'deptno' doesn't exist in table
+mysql> create table dept_student(foreign key(deptno) references dept_hod(deptno),student_name varchar(90));
+ERROR 1072 (42000): Key column 'deptno' doesn't exist in table
+mysql> /* We have to first create the column name before we make it a forign key*/
+mysql> create table dept_student(deptno integer,foreign key(deptno) references dept_hod(deptno),student_name varchar(90));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> insert into dept_hod values(1,'sharadha mam');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into dept_hod values(2,'seetha mam');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into dept_hod values(3,'raghavender sir');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into dept_hod values(4,'narender sir');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into dept_student values(1,'Sathwika');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into dept_student values(5,'Sathwika');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`employee/dept_student`, CONSTRAINT `dept_student_ibfk_1` FOREIGN KEY (`deptno`) REFERENCES `dept_hod` (`deptno`))
+mysql> insert into dept_student values(5,'xyz');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`employee/dept_student`, CONSTRAINT `dept_student_ibfk_1` FOREIGN KEY (`deptno`) REFERENCES `dept_hod` (`deptno`))
+mysql> insert into dept_student values(NULL,'xyz');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into dept_hod values(1,'narender sir');
+ERROR 1062 (23000): Duplicate entry '1' for key 1
+mysql> /*So yeah this is the concept of primary and foreign key*/
+mysql> notee;
